@@ -1,62 +1,63 @@
-import {
-  ADD_TODO,
-  DELETE_TODO,
-  EDIT_TODO,
-  COMPLETE_TODO,
-  COMPLETE_ALL_TODOS,
-  CLEAR_COMPLETED
-} from '../constants/ActionTypes'
+import {combineActions, createActions, handleActions} from 'redux-actions';
 
 const initialState = [
   {
-    text: 'Use Redux',
+    text: "Use Redux",
     completed: false,
     id: 0
   }
-]
+];
 
-export default function todos(state = initialState, action) {
-  switch (action.type) {
-    case ADD_TODO:
+export const {
+  addTodo,
+  deleteTodo,
+  editTodo,
+  completeTodo,
+  completeAllTodos,
+  clearCompleted
+} = createActions(
+  {
+    ADD_TODO: (text) => ({text}),
+    DELETE_TODO: id => todo => (todo.id !== id),
+    EDIT_TODO: (id, text) => ({id, text}),
+    COMPLETE_TODO: (id) => ({id}),
+    CLEAR_COMPLETED: () => todo => (todo.completed === false)
+  },
+  "COMPLETE_ALL_TODOS",
+);
+
+export default handleActions(
+  {
+    [addTodo]: (state, action) => {
       return [
         ...state,
         {
           id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
           completed: false,
-          text: action.text
+          text: action.payload.text
         }
-      ]
-
-    case DELETE_TODO:
-      return state.filter(todo =>
-        todo.id !== action.id
-      )
-
-    case EDIT_TODO:
-      return state.map(todo =>
-        todo.id === action.id ?
-          { ...todo, text: action.text } :
-          todo
-      )
-
-    case COMPLETE_TODO:
-      return state.map(todo =>
-        todo.id === action.id ?
-          { ...todo, completed: !todo.completed } :
-          todo
-      )
-
-    case COMPLETE_ALL_TODOS:
-      const areAllMarked = state.every(todo => todo.completed)
-      return state.map(todo => ({
+      ];
+    },
+    [editTodo]: (state, action) => {
+      return state.map((todo) =>
+        todo.id === action.payload.id ? { ...todo, text: action.payload.text } : todo
+      );
+    },
+    [completeTodo]: (state, action) => {
+      return state.map((todo) =>
+        todo.id === action.payload.id ? { ...todo, completed: !todo.completed } : todo
+      );
+    },
+    [completeAllTodos]: (state, action) => {
+      const areAllMarked = state.every((todo) => todo.completed);
+      return state.map((todo) => ({
         ...todo,
         completed: !areAllMarked
-      }))
-
-    case CLEAR_COMPLETED:
-      return state.filter(todo => todo.completed === false)
-
-    default:
-      return state
-  }
-}
+      }));
+    },
+    [combineActions(deleteTodo, clearCompleted)]: (state, action) => {
+      return state.filter(action.payload);
+    }
+  },
+  initialState
+);
