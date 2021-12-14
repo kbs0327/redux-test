@@ -1,4 +1,4 @@
-import {useRecoilValue} from 'recoil';
+import {useAtomValue} from 'jotai/utils';
 import MainSection from '../components/MainSection';
 import useClearCompleted from '../hooks/useClearCompleted';
 import useCompleteAllTodos from '../hooks/useCompleteAllTodos';
@@ -6,8 +6,8 @@ import todos from '../reducers/todos';
 import {completedTodoCount} from '../selectors';
 
 const MainSectionContainer = () => {
-  const todosValue = useRecoilValue(todos);
-  const completedCount = useRecoilValue(completedTodoCount);
+  const todosValue = useAtomValue(todos);
+  const completedCount = useAtomValue(completedTodoCount);
   const completeAllTodos = useCompleteAllTodos();
   const clearCompleted = useClearCompleted();
   const actions = {

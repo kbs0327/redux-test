@@ -1,9 +1,9 @@
-import {useRecoilState} from 'recoil';
+import {useAtom} from 'jotai';
 import Link from '../components/Link';
 import visibilityFilter from '../reducers/visibilityFilter';
 
 const FooterLink = ({filter, children}) => {
-  const [visibilityFilterValue, setVisibilityFilter] = useRecoilState(visibilityFilter);
+  const [visibilityFilterValue, setVisibilityFilter] = useAtom(visibilityFilter);
 
   const active = filter === visibilityFilterValue;
   const setFilter = () => {

@@ -1,37 +1,19 @@
-import {difference} from 'lodash';
-import {atom, atomFamily, DefaultValue, selector} from 'recoil';
+import {atom} from 'jotai';
+import {atomFamily} from 'jotai/utils';
 
-export const todoDataStore = atomFamily({
-  key: 'todo',
-  default: null
-});
+export const todoDataStore = atomFamily(value => atom(value));
 
-export const todoIds = atom({
-  key: 'todoIds',
-  default: []
-});
+export const todoIds = atom([]);
 
-const todos = selector({
-  key: 'todos',
-  get: ({get}) => {
-    return get(todoIds).map(id => todoDataStore(id)).map(get);
-  },
-  set: ({get, set, reset}, newValue) => {
-    if (newValue instanceof DefaultValue) {
-      get(todoIds).map(id => todoDataStore(id)).forEach(reset);
-      reset(todoIds);
-      return;
-    }
+const todos = atom(
+  get => get(todoIds).map(id => todoDataStore(id)).map(get),
+  (get, set, newValue) => {
     const ids = newValue.map(value => {
       set(todoDataStore(value.id), value);
       return value.id;
     });
-    const removedIds = difference(get(todoIds), ids)
-    removedIds.forEach(id => {
-      reset(todoDataStore(id));
-    });
     set(todoIds, ids);
   }
-});
+);
 
 export default todos;
