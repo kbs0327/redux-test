@@ -1,5 +1,8 @@
-import { connect } from 'react-redux'
-import Header from '../components/Header'
-import { addTodo } from '../actions'
+import Header from '../components/Header';
+import useActions from '../hooks/useActions';
 
-export default connect(null, { addTodo })(Header)
+const HeaderContainer = () => {
+  const {addTodo} = useActions();
+  return <Header addTodo={addTodo}/>
+}
+export default HeaderContainer;

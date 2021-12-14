@@ -1,23 +1,15 @@
-import { connect } from 'react-redux'
-import * as TodoActions from '../actions'
-import { bindActionCreators } from 'redux'
-import MainSection from '../components/MainSection'
-import { getCompletedTodoCount } from '../selectors'
+import {useRecoilValue} from 'recoil';
+import MainSection from '../components/MainSection';
+import useActions from '../hooks/useActions';
+import todos from '../reducers/todos';
+import {completedTodoCount} from '../selectors';
 
+const MainSectionContainer = () => {
+  const todosValue = useRecoilValue(todos);
+  const completedCount = useRecoilValue(completedTodoCount);
+  const actions = useActions();
 
-const mapStateToProps = state => ({
-  todosCount: state.todos.length,
-  completedCount: getCompletedTodoCount(state)
-})
+  return <MainSection completedCount={completedCount} todosCount={todosValue.length} actions={actions}/>
+}
 
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch)
-})
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainSection)
-
+export default MainSectionContainer;
