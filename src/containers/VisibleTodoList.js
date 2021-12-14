@@ -1,21 +1,12 @@
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as TodoActions from '../actions'
-import TodoList from '../components/TodoList'
-import { getVisibleTodos } from '../selectors'
+import {useRecoilValue} from 'recoil';
+import TodoList from '../components/TodoList';
+import useActions from '../hooks/useActions';
+import {visibleTodos} from '../selectors';
 
-const mapStateToProps = state => ({
-  filteredTodos: getVisibleTodos(state)
-})
+const VisibleTodoList = () => {
+  const actions = useActions();
+  const filteredTodos = useRecoilValue(visibleTodos);
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch)
-})
-
-
-const VisibleTodoList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoList)
-
+  return <TodoList actions={actions} filteredTodos={filteredTodos}/>
+};
 export default VisibleTodoList
