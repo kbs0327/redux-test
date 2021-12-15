@@ -1,13 +1,11 @@
-import {useSetRecoilState} from 'recoil';
+import {useAtom} from 'jotai';
 import todos from '../reducers/todos';
 
 const useClearCompleted = () => {
-  const setTodos = useSetRecoilState(todos);
+  const [prevTodos, setTodos] = useAtom(todos);
 
   return () => {
-    setTodos(prevTodos => {
-      return prevTodos.filter(todo => (todo.completed === false));
-    });
+    setTodos(prevTodos.filter(todo => (todo.completed === false)));
   }
 };
 

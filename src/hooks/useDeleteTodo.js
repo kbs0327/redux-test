@@ -1,15 +1,12 @@
-import {useResetRecoilState, useSetRecoilState} from 'recoil';
-import {todoDataStore, todoIds} from '../reducers/todos';
+import {useAtom} from 'jotai';
+import {useUpdateAtom} from 'jotai/utils';
+import {todoIds} from '../reducers/todos';
 
 const useDeleteTodo = id => {
-  const setIds = useSetRecoilState(todoIds);
-  const resetId = useResetRecoilState(todoDataStore(id));
+  const [ids, setIds] = useAtom(todoIds);
 
   return () => {
-    resetId();
-    setIds(ids => {
-      return ids.filter(_id => (_id !== id));
-    });
+    setIds(ids.filter(_id => (_id !== id)));
   }
 };
 

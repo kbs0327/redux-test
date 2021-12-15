@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {RecoilRoot} from 'recoil';
+import {Provider} from 'jotai';
 import 'todomvc-app-css/index.css';
 import App from './components/App';
 
 render(
-  <RecoilRoot>
+  <Provider>
     <App />
-  </RecoilRoot>,
+  </Provider>,
   document.getElementById('root')
 )

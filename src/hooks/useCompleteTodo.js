@@ -1,10 +1,10 @@
-import {useSetRecoilState} from 'recoil';
+import {useAtom} from 'jotai';
 import {todoDataStore} from '../reducers/todos';
 
 const useCompleteTodo = id => {
-  const setTodo = useSetRecoilState(todoDataStore(id));
+  const [prev, setTodo] = useAtom(todoDataStore(id));
   return () => {
-    setTodo(prev => ({
+    setTodo(({
       ...prev,
       completed: !prev.completed
     }));

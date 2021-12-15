@@ -1,13 +1,14 @@
-import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {useAtom} from 'jotai';
+import {useAtomValue, useUpdateAtom} from 'jotai/utils';
 import todos, {todoIds} from '../reducers/todos';
 
 const useAddTodo = () => {
-  const setTodos = useSetRecoilState(todos);
-  const ids = useRecoilValue(todoIds);
+  const [prevTodos, setTodos] = useAtom(todos);
+  const ids = useAtomValue(todoIds);
 
   return  (text) => {
     const newId = ids.reduce((maxId, id) => Math.max(id, maxId), -1) + 1;
-    setTodos(prevTodos => [
+    setTodos([
       ...prevTodos,
       {
         id: newId,

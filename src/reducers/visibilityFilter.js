@@ -1,9 +1,6 @@
-import {atom} from 'recoil';
+import {atom} from 'jotai';
 import {SHOW_ALL} from '../constants/TodoFilters';
 
-const visibilityFilter = atom({
-  key: 'visibilityFilter',
-  default: SHOW_ALL
-});
+const visibilityFilter = atom(SHOW_ALL);
 
 export default visibilityFilter
