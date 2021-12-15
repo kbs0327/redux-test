@@ -11,9 +11,9 @@ const TodoItem = ({todo, editTodo, deleteTodo, completeTodo}) => {
 
   const handleSave = (id, text) => {
     if (text.length === 0) {
-      deleteTodo(id)
+      deleteTodo()
     } else {
-      editTodo(id, text)
+      editTodo(text)
     }
     setState({ editing: false })
   }
@@ -31,12 +31,12 @@ const TodoItem = ({todo, editTodo, deleteTodo, completeTodo}) => {
         <input className="toggle"
                type="checkbox"
                checked={todo.completed}
-               onChange={() => completeTodo(todo.id)} />
+               onChange={() => completeTodo()} />
         <label onDoubleClick={handleDoubleClick}>
           {todo.text}
         </label>
         <button className="destroy"
-                onClick={() => deleteTodo(todo.id)} />
+                onClick={() => deleteTodo()} />
       </div>
     )
   }

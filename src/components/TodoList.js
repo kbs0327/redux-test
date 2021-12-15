@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import TodoItem from './TodoItem'
+import PropTypes from 'prop-types';
+import React from 'react';
+import TodoItemContainer from '../containers/TodoItem';
 
-const TodoList = ({ filteredTodos, actions }) => (
+const TodoList = ({ filteredTodos }) => (
   <ul className="todo-list">
     {filteredTodos.map(todo =>
-      <TodoItem key={todo.id} todo={todo} {...actions} />
+      <TodoItemContainer key={todo.id} todo={todo} />
     )}
   </ul>
 )
@@ -15,8 +15,7 @@ TodoList.propTypes = {
     id: PropTypes.number.isRequired,
     completed: PropTypes.bool.isRequired,
     text: PropTypes.string.isRequired
-  }).isRequired).isRequired,
-  actions: PropTypes.object.isRequired
+  }).isRequired).isRequired
 }
 
 export default TodoList
