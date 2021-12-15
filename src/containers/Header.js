@@ -1,8 +1,8 @@
 import Header from '../components/Header';
-import useActions from '../hooks/useActions';
+import useAddTodo from '../hooks/useAddTodo';
 
 const HeaderContainer = () => {
-  const {addTodo} = useActions();
+  const addTodo = useAddTodo();
   return <Header addTodo={addTodo}/>
 }
 export default HeaderContainer;

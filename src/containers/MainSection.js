@@ -1,13 +1,19 @@
 import {useRecoilValue} from 'recoil';
 import MainSection from '../components/MainSection';
-import useActions from '../hooks/useActions';
+import useClearCompleted from '../hooks/useClearCompleted';
+import useCompleteAllTodos from '../hooks/useCompleteAllTodos';
 import todos from '../reducers/todos';
 import {completedTodoCount} from '../selectors';
 
 const MainSectionContainer = () => {
   const todosValue = useRecoilValue(todos);
   const completedCount = useRecoilValue(completedTodoCount);
-  const actions = useActions();
+  const completeAllTodos = useCompleteAllTodos();
+  const clearCompleted = useClearCompleted();
+  const actions = {
+    completeAllTodos,
+    clearCompleted
+  };
 
   return <MainSection completedCount={completedCount} todosCount={todosValue.length} actions={actions}/>
 }
