@@ -1,21 +1,10 @@
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as TodoActions from '../actions'
-import TodoList from '../components/TodoList'
-import { getVisibleTodos } from '../selectors'
+import {useAtomValue} from 'jotai/utils';
+import TodoList from '../components/TodoList';
+import {visibleTodos} from '../selectors';
 
-const mapStateToProps = state => ({
-  filteredTodos: getVisibleTodos(state)
-})
+const VisibleTodoList = () => {
+  const filteredTodos = useAtomValue(visibleTodos);
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch)
-})
-
-
-const VisibleTodoList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoList)
-
+  return <TodoList filteredTodos={filteredTodos}/>
+};
 export default VisibleTodoList

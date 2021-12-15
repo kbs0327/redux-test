@@ -1,31 +1,27 @@
-import { createSelector } from 'reselect'
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters'
+import {atom} from 'jotai';
+import {SHOW_ACTIVE, SHOW_ALL, SHOW_COMPLETED} from '../constants/TodoFilters';
+import todos from '../reducers/todos';
+import visibilityFilter from '../reducers/visibilityFilter';
 
-const getVisibilityFilter = state => state.visibilityFilter
-const getTodos = state => state.todos
-
-export const getVisibleTodos = createSelector(
-  [getVisibilityFilter, getTodos],
-  (visibilityFilter, todos) => {
-    switch (visibilityFilter) {
+export const visibleTodos = atom(get => {
+    switch (get(visibilityFilter)) {
       case SHOW_ALL:
-        return todos
+        return get(todos);
       case SHOW_COMPLETED:
-        return todos.filter(t => t.completed)
+        return get(todos).filter(t => t.completed);
       case SHOW_ACTIVE:
-        return todos.filter(t => !t.completed)
+        return get(todos).filter(t => !t.completed);
       default:
-        throw new Error('Unknown filter: ' + visibilityFilter)
+        throw new Error('Unknown filter: ' + visibilityFilter);
     }
   }
-)
+);
 
-export const getCompletedTodoCount = createSelector(
-  [getTodos],
-  todos => (
-    todos.reduce((count, todo) =>
+
+export const completedTodoCount = atom(get => {
+  return get(todos).reduce(
+    (count, todo) =>
       todo.completed ? count + 1 : count,
-      0
-    )
-  )
-)
+    0
+  );
+});

@@ -1,18 +1,16 @@
-import { connect } from 'react-redux'
-import { setVisibilityFilter } from '../actions'
-import Link from '../components/Link'
+import {useAtom} from 'jotai';
+import Link from '../components/Link';
+import visibilityFilter from '../reducers/visibilityFilter';
 
-const mapStateToProps = (state, ownProps) => ({
-  active: ownProps.filter === state.visibilityFilter
-})
+const FooterLink = ({filter, children}) => {
+  const [visibilityFilterValue, setVisibilityFilter] = useAtom(visibilityFilter);
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  setFilter: () => {
-    dispatch(setVisibilityFilter(ownProps.filter))
+  const active = filter === visibilityFilterValue;
+  const setFilter = () => {
+    setVisibilityFilter(filter);
   }
-})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Link)
+  return <Link setFilter={setFilter} active={active}>{children}</Link>
+}
+
+export default FooterLink;

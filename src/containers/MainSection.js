@@ -1,23 +1,21 @@
-import { connect } from 'react-redux'
-import * as TodoActions from '../actions'
-import { bindActionCreators } from 'redux'
-import MainSection from '../components/MainSection'
-import { getCompletedTodoCount } from '../selectors'
+import {useAtomValue} from 'jotai/utils';
+import MainSection from '../components/MainSection';
+import useClearCompleted from '../hooks/useClearCompleted';
+import useCompleteAllTodos from '../hooks/useCompleteAllTodos';
+import todos from '../reducers/todos';
+import {completedTodoCount} from '../selectors';
 
+const MainSectionContainer = () => {
+  const todosValue = useAtomValue(todos);
+  const completedCount = useAtomValue(completedTodoCount);
+  const completeAllTodos = useCompleteAllTodos();
+  const clearCompleted = useClearCompleted();
+  const actions = {
+    completeAllTodos,
+    clearCompleted
+  };
 
-const mapStateToProps = state => ({
-  todosCount: state.todos.length,
-  completedCount: getCompletedTodoCount(state)
-})
+  return <MainSection completedCount={completedCount} todosCount={todosValue.length} actions={actions}/>
+}
 
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TodoActions, dispatch)
-})
-
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainSection)
-
+export default MainSectionContainer;
